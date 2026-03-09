@@ -3,76 +3,92 @@ import pandas as pd
 import plotly.express as px
 from sklearn.ensemble import IsolationForest
 
-# Page config
+# ----------------------------
+# PAGE CONFIG
+# ----------------------------
+
 st.set_page_config(
     page_title="AI Revenue Leakage Detection",
     layout="wide"
 )
 
-# -----------------------------
-# Hospital Theme
-# -----------------------------
+# ----------------------------
+# CLEAN HOSPITAL UI
+# ----------------------------
 
 st.markdown("""
 <style>
 
-.stApp {
-background: linear-gradient(rgba(10,40,80,0.75), rgba(10,40,80,0.75)),
-url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1f");
-background-size: cover;
-background-position: center;
-background-attachment: fixed;
+.stApp{
+background-color:#f4f7fb;
 }
 
-.block-container {
-background: white;
-padding: 2rem;
-border-radius: 12px;
-box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+section[data-testid="stSidebar"]{
+background:linear-gradient(180deg,#0a2540,#123a66);
 }
 
-section[data-testid="stSidebar"] {
-background-color:#0b2b4c;
+section[data-testid="stSidebar"] *{
 color:white;
 }
 
-section[data-testid="stSidebar"] * {
-color:white;
+.block-container{
+padding-top:2rem;
 }
 
-[data-testid="metric-container"] {
-background:#f8fbff;
-border-left:6px solid #1a73e8;
-padding:15px;
-border-radius:10px;
-box-shadow:0px 4px 10px rgba(0,0,0,0.1);
+[data-testid="metric-container"]{
+background:white;
+border-radius:12px;
+padding:18px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+border-left:6px solid #1f77ff;
+}
+
+h1,h2,h3{
+color:#0a2540;
+}
+
+.stDownloadButton>button{
+background:#1f77ff;
+color:white;
+border-radius:8px;
+padding:10px 20px;
+font-weight:600;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
-# Title
-# -----------------------------
+# ----------------------------
+# HEADER
+# ----------------------------
 
-st.title("🏥 AI Revenue Leakage Detection System")
-st.caption("Hospital Revenue Cycle Analytics Dashboard")
+col1,col2 = st.columns([1,8])
+
+with col1:
+    st.image(
+    "https://cdn-icons-png.flaticon.com/512/2966/2966484.png",
+    width=70
+    )
+
+with col2:
+    st.title("AI Revenue Leakage Detection System")
+    st.caption("Hospital Revenue Cycle Analytics Dashboard")
 
 st.info("Upload hospital datasets to detect missing claims, underpayments and AI anomalies.")
 
-# -----------------------------
-# Sidebar Upload
-# -----------------------------
+# ----------------------------
+# SIDEBAR UPLOAD
+# ----------------------------
 
 st.sidebar.header("Upload Hospital Data")
 
-patients_file = st.sidebar.file_uploader("Upload Patients File", type=["xlsx"])
-billing_file = st.sidebar.file_uploader("Upload Billing File", type=["xlsx"])
-insurance_file = st.sidebar.file_uploader("Upload Insurance File", type=["xlsx"])
+patients_file = st.sidebar.file_uploader("Upload Patients File",type=["xlsx"])
+billing_file = st.sidebar.file_uploader("Upload Billing File",type=["xlsx"])
+insurance_file = st.sidebar.file_uploader("Upload Insurance File",type=["xlsx"])
 
-# -----------------------------
-# Main Logic
-# -----------------------------
+# ----------------------------
+# MAIN LOGIC
+# ----------------------------
 
 if patients_file and billing_file and insurance_file:
 
@@ -80,27 +96,33 @@ if patients_file and billing_file and insurance_file:
     billing = pd.read_excel(billing_file)
     insurance = pd.read_excel(insurance_file)
 
-    st.success("Files uploaded successfully ✅")
+    st.success("Files uploaded successfully")
 
-    # Merge datasets
-    df = pd.merge(patients, billing, on="Patient_ID", how="left")
-    df = pd.merge(df, insurance, on="Patient_ID", how="left")
+    # ----------------------------
+    # MERGE DATA
+    # ----------------------------
 
-    # Revenue loss
+    df = pd.merge(patients,billing,on="Patient_ID",how="left")
+    df = pd.merge(df,insurance,on="Patient_ID",how="left")
+
+    # ----------------------------
+    # REVENUE LOSS
+    # ----------------------------
+
     df["Revenue_Loss"] = df["Billed_Amount_USD"] - df["Actual_Payment_USD"]
     df["Revenue_Loss"] = df["Revenue_Loss"].fillna(0)
 
     # Missing claims
-    missing_claims = df[df["Claim_Submitted"] == "No"]
+    missing_claims = df[df["Claim_Submitted"]=="No"]
 
     # Underpaid claims
     underpaid_claims = df[df["Actual_Payment_USD"] < df["Billed_Amount_USD"]]
 
-    # -----------------------------
-    # AI ANOMALY DETECTION
-    # -----------------------------
+    # ----------------------------
+    # ML ANOMALY DETECTION
+    # ----------------------------
 
-    model = IsolationForest(contamination=0.1, random_state=42)
+    model = IsolationForest(contamination=0.1,random_state=42)
 
     features = df[["Billed_Amount_USD","Actual_Payment_USD"]]
 
@@ -108,35 +130,34 @@ if patients_file and billing_file and insurance_file:
 
     df["AI_Anomaly"] = df["AI_Anomaly"].map({1:"Normal",-1:"Suspicious"})
 
-    ai_anomalies = df[df["AI_Anomaly"] == "Suspicious"]
+    ai_anomalies = df[df["AI_Anomaly"]=="Suspicious"]
 
     total_loss = df["Revenue_Loss"].sum()
 
-    # -----------------------------
-    # Dashboard Metrics
-    # -----------------------------
+    # ----------------------------
+    # DASHBOARD METRICS
+    # ----------------------------
 
-    st.header("📊 Revenue Dashboard")
+    st.header("Revenue Dashboard")
 
     col1,col2,col3,col4,col5 = st.columns(5)
 
-    col1.metric("Total Patients", df["Patient_ID"].nunique())
-    col2.metric("Missing Claims", len(missing_claims))
-    col3.metric("Underpaid Claims", len(underpaid_claims))
-    col4.metric("AI Suspicious Claims", len(ai_anomalies))
-    col5.metric("Revenue Leakage", f"${total_loss}")
+    col1.metric("Total Patients",df["Patient_ID"].nunique())
+    col2.metric("Missing Claims",len(missing_claims))
+    col3.metric("Underpaid Claims",len(underpaid_claims))
+    col4.metric("AI Suspicious Claims",len(ai_anomalies))
+    col5.metric("Revenue Leakage",f"${total_loss}")
 
     st.divider()
 
-    # Alert
     if total_loss > 0:
-        st.error(f"⚠ Revenue Leakage Detected: ${total_loss}")
+        st.error(f"Revenue Leakage Detected: ${total_loss}")
     else:
         st.success("No Revenue Leakage Detected")
 
-    # -----------------------------
-    # Revenue Chart
-    # -----------------------------
+    # ----------------------------
+    # REVENUE CHART
+    # ----------------------------
 
     st.subheader("Revenue Comparison")
 
@@ -145,14 +166,14 @@ if patients_file and billing_file and insurance_file:
         x="Procedure_Name",
         y=["Billed_Amount_USD","Actual_Payment_USD"],
         barmode="group",
-        color_discrete_sequence=["#1a73e8","#6ec6ff"]
+        color_discrete_sequence=["#1f77ff","#6ec6ff"]
     )
 
     st.plotly_chart(fig,use_container_width=True)
 
-    # -----------------------------
-    # Department Leakage
-    # -----------------------------
+    # ----------------------------
+    # DEPARTMENT LEAKAGE
+    # ----------------------------
 
     st.subheader("Department Revenue Leakage")
 
@@ -170,9 +191,9 @@ if patients_file and billing_file and insurance_file:
 
     st.divider()
 
-    # -----------------------------
-    # Tabs
-    # -----------------------------
+    # ----------------------------
+    # TABS
+    # ----------------------------
 
     tab1,tab2,tab3,tab4 = st.tabs([
         "Full Dataset",
@@ -191,20 +212,21 @@ if patients_file and billing_file and insurance_file:
         st.dataframe(underpaid_claims,use_container_width=True)
 
     with tab4:
+        st.subheader("AI Detected Suspicious Claims")
         st.dataframe(ai_anomalies,use_container_width=True)
 
     st.divider()
 
-    # -----------------------------
-    # Download Report
-    # -----------------------------
+    # ----------------------------
+    # DOWNLOAD REPORT
+    # ----------------------------
 
     csv = df.to_csv(index=False)
 
     st.download_button(
         label="Download Revenue Audit Report",
         data=csv,
-        file_name="hospital_revenue_report.csv",
+        file_name="revenue_leakage_report.csv",
         mime="text/csv"
     )
 
