@@ -8,12 +8,54 @@ st.set_page_config(
     layout="wide"
 )
 
-# Title
-st.title("🏥 AI Revenue Leakage Detection System")
-st.caption("Smart analytics platform for hospital revenue cycle management")
+# Hospital Theme Background
+st.markdown(
+"""
+<style>
+
+.stApp {
+background-image: url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3");
+background-size: cover;
+background-attachment: fixed;
+}
+
+[data-testid="stHeader"] {
+background: rgba(0,0,0,0);
+}
+
+[data-testid="stSidebar"] {
+background-color: rgba(240,248,255,0.95);
+}
+
+.block-container {
+background-color: rgba(255,255,255,0.92);
+padding: 2rem;
+border-radius: 12px;
+}
+
+[data-testid="metric-container"] {
+background-color: white;
+border-radius: 10px;
+padding: 15px;
+border-left: 5px solid #0a4da3;
+box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+}
+
+</style>
+""",
+unsafe_allow_html=True
+)
+
+# Header
+st.markdown("""
+# 🏥 AI Revenue Leakage Detection System
+### Hospital Revenue Cycle Analytics Dashboard
+""")
+
+st.info("Upload hospital datasets to detect missing claims and revenue leakage automatically.")
 
 # Sidebar Upload
-st.sidebar.header("Upload Hospital Data")
+st.sidebar.header("📂 Upload Hospital Data")
 
 patients_file = st.sidebar.file_uploader("Upload Patients File", type=["xlsx"])
 billing_file = st.sidebar.file_uploader("Upload Billing File", type=["xlsx"])
@@ -22,7 +64,7 @@ insurance_file = st.sidebar.file_uploader("Upload Insurance File", type=["xlsx"]
 
 if patients_file and billing_file and insurance_file:
 
-    # Load files
+    # Load data
     patients = pd.read_excel(patients_file)
     billing = pd.read_excel(billing_file)
     insurance = pd.read_excel(insurance_file)
@@ -33,11 +75,11 @@ if patients_file and billing_file and insurance_file:
     df = pd.merge(patients, billing, on="Patient_ID", how="left")
     df = pd.merge(df, insurance, on="Patient_ID", how="left")
 
-    # Revenue loss calculation
+    # Revenue Loss
     df["Revenue_Loss"] = df["Billed_Amount_USD"] - df["Actual_Payment_USD"]
     df["Revenue_Loss"] = df["Revenue_Loss"].fillna(0)
 
-    # Detect issues
+    # Issues detection
     missing_claims = df[df["Claim_Submitted"] == "No"]
     underpaid_claims = df[df["Actual_Payment_USD"] < df["Billed_Amount_USD"]]
 
@@ -45,7 +87,7 @@ if patients_file and billing_file and insurance_file:
 
     st.divider()
 
-    # Metrics Dashboard
+    # Dashboard Metrics
     st.header("📊 Revenue Dashboard")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -53,11 +95,11 @@ if patients_file and billing_file and insurance_file:
     col1.metric("Total Patients", df["Patient_ID"].nunique())
     col2.metric("Missing Claims", len(missing_claims))
     col3.metric("Underpaid Claims", len(underpaid_claims))
-    col4.metric("Revenue Leakage", f"$ {total_loss}")
+    col4.metric("Total Revenue Leakage", f"$ {total_loss}")
 
     st.divider()
 
-    # Alert section
+    # Alert
     if total_loss > 0:
         st.error(f"⚠ Revenue Leakage Detected: ${total_loss}")
     else:
@@ -65,21 +107,22 @@ if patients_file and billing_file and insurance_file:
 
     st.divider()
 
-    # Charts
-    st.subheader("Revenue Comparison")
+    # Revenue comparison chart
+    st.subheader("💰 Revenue Comparison")
 
     fig = px.bar(
         df,
         x="Procedure_Name",
-        y=["Billed_Amount_USD", "Actual_Payment_USD"],
-        title="Billed vs Actual Payment",
-        barmode="group"
+        y=["Billed_Amount_USD","Actual_Payment_USD"],
+        color_discrete_sequence=["#0a4da3","#6ec6ff"],
+        barmode="group",
+        title="Billed vs Actual Payment"
     )
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # Department analysis
-    st.subheader("Revenue Leakage by Department")
+    # Department Analysis
+    st.subheader("🏥 Department Revenue Leakage")
 
     dept_loss = df.groupby("Department")["Revenue_Loss"].sum().reset_index()
 
@@ -88,6 +131,7 @@ if patients_file and billing_file and insurance_file:
         x="Department",
         y="Revenue_Loss",
         color="Revenue_Loss",
+        color_continuous_scale="Blues",
         title="Department-wise Revenue Leakage"
     )
 
@@ -95,7 +139,7 @@ if patients_file and billing_file and insurance_file:
 
     st.divider()
 
-    # Tabs for tables
+    # Tabs
     tab1, tab2, tab3 = st.tabs(
         ["📄 Full Dataset", "⚠ Missing Claims", "💰 Underpaid Claims"]
     )
@@ -105,7 +149,7 @@ if patients_file and billing_file and insurance_file:
         st.dataframe(df, use_container_width=True)
 
     with tab2:
-        st.subheader("Claims Not Submitted to Insurance")
+        st.subheader("Claims Not Submitted")
         st.dataframe(missing_claims, use_container_width=True)
 
     with tab3:
@@ -125,4 +169,4 @@ if patients_file and billing_file and insurance_file:
     )
 
 else:
-    st.info("Please upload all three files to begin analysis.")
+    st.warning("Please upload Patients, Billing and Insurance files to begin analysis.")
