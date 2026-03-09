@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # ----------------------------
-# CLEAN HOSPITAL UI
+# UI STYLE
 # ----------------------------
 
 st.markdown("""
@@ -23,6 +23,7 @@ st.markdown("""
 background-color:#f4f7fb;
 }
 
+/* Sidebar */
 section[data-testid="stSidebar"]{
 background:linear-gradient(180deg,#0a2540,#123a66);
 }
@@ -31,10 +32,17 @@ section[data-testid="stSidebar"] *{
 color:white;
 }
 
-.block-container{
-padding-top:2rem;
+/* Header */
+h1{
+color:#0a2540;
+font-weight:700;
 }
 
+h2,h3{
+color:#1b2b4b;
+}
+
+/* Metric Cards */
 [data-testid="metric-container"]{
 background:white;
 border-radius:12px;
@@ -43,10 +51,31 @@ box-shadow:0 4px 12px rgba(0,0,0,0.08);
 border-left:6px solid #1f77ff;
 }
 
-h1,h2,h3{
-color:#0a2540;
+/* Info box */
+[data-testid="stAlert"][kind="info"]{
+background:#e6f2ff;
+color:#003366;
 }
 
+/* Success box */
+[data-testid="stAlert"][kind="success"]{
+background:#e6ffed;
+color:#14532d;
+}
+
+/* Warning box */
+[data-testid="stAlert"][kind="warning"]{
+background:#fff3cd;
+color:#7a5a00;
+}
+
+/* Error box */
+[data-testid="stAlert"][kind="error"]{
+background:#ffe6e6;
+color:#7a0000;
+}
+
+/* Buttons */
 .stDownloadButton>button{
 background:#1f77ff;
 color:white;
@@ -65,10 +94,7 @@ font-weight:600;
 col1,col2 = st.columns([1,8])
 
 with col1:
-    st.image(
-    "https://cdn-icons-png.flaticon.com/512/2966/2966484.png",
-    width=70
-    )
+    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966484.png",width=70)
 
 with col2:
     st.title("AI Revenue Leakage Detection System")
@@ -98,24 +124,18 @@ if patients_file and billing_file and insurance_file:
 
     st.success("Files uploaded successfully")
 
-    # ----------------------------
-    # MERGE DATA
-    # ----------------------------
-
+    # Merge datasets
     df = pd.merge(patients,billing,on="Patient_ID",how="left")
     df = pd.merge(df,insurance,on="Patient_ID",how="left")
 
-    # ----------------------------
-    # REVENUE LOSS
-    # ----------------------------
-
+    # Revenue Loss
     df["Revenue_Loss"] = df["Billed_Amount_USD"] - df["Actual_Payment_USD"]
     df["Revenue_Loss"] = df["Revenue_Loss"].fillna(0)
 
-    # Missing claims
+    # Missing Claims
     missing_claims = df[df["Claim_Submitted"]=="No"]
 
-    # Underpaid claims
+    # Underpaid Claims
     underpaid_claims = df[df["Actual_Payment_USD"] < df["Billed_Amount_USD"]]
 
     # ----------------------------
@@ -150,6 +170,7 @@ if patients_file and billing_file and insurance_file:
 
     st.divider()
 
+    # Alert
     if total_loss > 0:
         st.error(f"Revenue Leakage Detected: ${total_loss}")
     else:
@@ -192,7 +213,7 @@ if patients_file and billing_file and insurance_file:
     st.divider()
 
     # ----------------------------
-    # TABS
+    # DATA TABS
     # ----------------------------
 
     tab1,tab2,tab3,tab4 = st.tabs([
