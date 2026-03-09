@@ -5,30 +5,31 @@ import plotly.express as px
 from data_pipeline import load_data
 from ml_model import detect_anomalies
 
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
+# -------------------------
+# PAGE SETTINGS
+# -------------------------
 
 st.set_page_config(
     page_title="AI Revenue Leakage Detection",
     layout="wide"
 )
 
-# -----------------------------
-# HOSPITAL UI STYLE
-# -----------------------------
+# -------------------------
+# DARK UI STYLE
+# -------------------------
 
 st.markdown("""
 <style>
 
 .stApp{
-background: linear-gradient(135deg,#f4f9ff,#e8f1ff);
+background-color:#0f172a;
+color:white;
 }
 
 /* Sidebar */
 
 section[data-testid="stSidebar"]{
-background: linear-gradient(180deg,#0a2540,#1f4e79);
+background:#020617;
 color:white;
 }
 
@@ -38,52 +39,40 @@ color:white;
 
 /* Titles */
 
-h1{
-color:#0a2540;
-font-weight:700;
+h1,h2,h3{
+color:#e2e8f0;
 }
 
-h2{
-color:#163a5f;
-}
-
-h3{
-color:#1f4e79;
-}
-
-/* Metric Cards */
+/* Metric cards */
 
 [data-testid="metric-container"]{
-background:white;
-border-radius:12px;
-padding:18px;
-box-shadow:0 6px 18px rgba(0,0,0,0.1);
-border-left:6px solid #2a7de1;
+background:#1e293b;
+border-radius:10px;
+padding:15px;
+border-left:5px solid #38bdf8;
 }
 
-/* Data tables */
+/* Tables */
 
 [data-testid="stDataFrame"]{
-background:white;
-border-radius:10px;
+background:#1e293b;
 }
 
 /* Buttons */
 
 .stDownloadButton>button{
-background:#2a7de1;
-color:white;
-border-radius:8px;
-padding:10px 20px;
+background:#38bdf8;
+color:black;
 font-weight:600;
+border-radius:8px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
+# -------------------------
 # HEADER
-# -----------------------------
+# -------------------------
 
 col1,col2 = st.columns([1,8])
 
@@ -96,9 +85,9 @@ with col2:
 
 st.info("Upload hospital datasets to detect missing claims, underpayments and AI anomalies.")
 
-# -----------------------------
+# -------------------------
 # SIDEBAR UPLOAD
-# -----------------------------
+# -------------------------
 
 st.sidebar.header("Upload Hospital Data")
 
@@ -106,9 +95,9 @@ patients_file = st.sidebar.file_uploader("Upload Patients File",type=["xlsx"])
 billing_file = st.sidebar.file_uploader("Upload Billing File",type=["xlsx"])
 insurance_file = st.sidebar.file_uploader("Upload Insurance File",type=["xlsx"])
 
-# -----------------------------
-# DATA PROCESSING
-# -----------------------------
+# -------------------------
+# PROCESS DATA
+# -------------------------
 
 if patients_file and billing_file and insurance_file:
 
@@ -118,9 +107,9 @@ if patients_file and billing_file and insurance_file:
 
     st.success("Files uploaded successfully")
 
-    # -----------------------------
-    # REVENUE LOGIC
-    # -----------------------------
+    # -------------------------
+    # CLAIM ANALYSIS
+    # -------------------------
 
     missing_claims = df[df["Claim_Submitted"]=="No"]
 
@@ -130,34 +119,30 @@ if patients_file and billing_file and insurance_file:
 
     total_loss = df["Revenue_Loss"].sum()
 
-    # -----------------------------
-    # DASHBOARD METRICS
-    # -----------------------------
+    # -------------------------
+    # METRICS
+    # -------------------------
 
     st.header("Revenue Dashboard")
 
-    col1,col2,col3,col4,col5 = st.columns(5)
+    c1,c2,c3,c4,c5 = st.columns(5)
 
-    col1.metric("Total Patients",df["Patient_ID"].nunique())
-    col2.metric("Missing Claims",len(missing_claims))
-    col3.metric("Underpaid Claims",len(underpaid_claims))
-    col4.metric("AI Suspicious Claims",len(ai_anomalies))
-    col5.metric("Revenue Leakage",f"${total_loss}")
+    c1.metric("Total Patients",df["Patient_ID"].nunique())
+    c2.metric("Missing Claims",len(missing_claims))
+    c3.metric("Underpaid Claims",len(underpaid_claims))
+    c4.metric("AI Suspicious Claims",len(ai_anomalies))
+    c5.metric("Revenue Leakage",f"${total_loss}")
 
     st.divider()
-
-    # -----------------------------
-    # ALERT
-    # -----------------------------
 
     if total_loss > 0:
         st.error(f"Revenue Leakage Detected: ${total_loss}")
     else:
         st.success("No Revenue Leakage Detected")
 
-    # -----------------------------
+    # -------------------------
     # REVENUE CHART
-    # -----------------------------
+    # -------------------------
 
     st.subheader("Revenue Comparison")
 
@@ -166,14 +151,14 @@ if patients_file and billing_file and insurance_file:
         x="Procedure_Name",
         y=["Billed_Amount_USD","Actual_Payment_USD"],
         barmode="group",
-        color_discrete_sequence=["#2a7de1","#6ec6ff"]
+        template="plotly_dark"
     )
 
     st.plotly_chart(fig,use_container_width=True)
 
-    # -----------------------------
+    # -------------------------
     # DEPARTMENT LOSS
-    # -----------------------------
+    # -------------------------
 
     st.subheader("Department Revenue Leakage")
 
@@ -183,43 +168,64 @@ if patients_file and billing_file and insurance_file:
         dept,
         x="Department",
         y="Revenue_Loss",
-        color="Revenue_Loss",
-        color_continuous_scale="Blues"
+        template="plotly_dark"
     )
 
     st.plotly_chart(fig2,use_container_width=True)
 
     st.divider()
 
-    # -----------------------------
-    # DATA TABS
-    # -----------------------------
+    # -------------------------
+    # AI ANOMALY DETECTION
+    # -------------------------
 
-    tab1,tab2,tab3,tab4 = st.tabs([
-        "Full Dataset",
-        "Missing Claims",
-        "Underpaid Claims",
-        "AI Suspicious Claims"
-    ])
+    st.header("AI Anomaly Detection")
 
-    with tab1:
-        st.dataframe(df,use_container_width=True)
+    st.info("Machine Learning Model Used: Isolation Forest")
 
-    with tab2:
-        st.dataframe(missing_claims,use_container_width=True)
+    st.metric("AI Suspicious Claims Detected",len(ai_anomalies))
 
-    with tab3:
-        st.dataframe(underpaid_claims,use_container_width=True)
+    fig_ml = px.scatter(
+        df,
+        x="Billed_Amount_USD",
+        y="Actual_Payment_USD",
+        color="AI_Anomaly",
+        template="plotly_dark",
+        title="AI Anomaly Detection Visualization"
+    )
 
-    with tab4:
-        st.subheader("AI Detected Suspicious Claims")
-        st.dataframe(ai_anomalies,use_container_width=True)
+    st.plotly_chart(fig_ml,use_container_width=True)
+
+    st.subheader("Suspicious Claims Detected by AI")
+
+    st.dataframe(ai_anomalies)
 
     st.divider()
 
-    # -----------------------------
+    # -------------------------
+    # DATA TABS
+    # -------------------------
+
+    tab1,tab2,tab3 = st.tabs([
+        "Full Dataset",
+        "Missing Claims",
+        "Underpaid Claims"
+    ])
+
+    with tab1:
+        st.dataframe(df)
+
+    with tab2:
+        st.dataframe(missing_claims)
+
+    with tab3:
+        st.dataframe(underpaid_claims)
+
+    st.divider()
+
+    # -------------------------
     # DOWNLOAD REPORT
-    # -----------------------------
+    # -------------------------
 
     st.download_button(
         "Download Revenue Audit Report",
