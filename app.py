@@ -4,84 +4,69 @@ import pandas as pd
 st.set_page_config(page_title="AI Revenue Leakage Detection", layout="wide")
 
 st.title("🏥 AI Revenue Leakage Detection System")
-st.markdown("Upload hospital data files to detect missing claims and revenue leakage.")
+st.write("Upload hospital datasets to detect revenue leakage.")
 
-# Sidebar Upload
+# Sidebar uploads
 st.sidebar.header("Upload Hospital Data")
 
-patients_file = st.sidebar.file_uploader("Upload Patients File", type=["xlsx","csv"])
-billing_file = st.sidebar.file_uploader("Upload Billing File", type=["xlsx","csv"])
-claims_file = st.sidebar.file_uploader("Upload Claims File", type=["xlsx","csv"])
+patients_file = st.sidebar.file_uploader("Upload Patients File", type=["xlsx"])
+billing_file = st.sidebar.file_uploader("Upload Billing File", type=["xlsx"])
+insurance_file = st.sidebar.file_uploader("Upload Insurance File", type=["xlsx"])
 
 
-# Function to load file
-def load_file(file):
-    if file.name.endswith(".xlsx"):
-        return pd.read_excel(file)
-    else:
-        return pd.read_csv(file)
+if patients_file and billing_file and insurance_file:
 
-
-if patients_file and billing_file and claims_file:
-
-    # Load data
-    patients = load_file(patients_file)
-    billing = load_file(billing_file)
-    claims = load_file(claims_file)
-
-    # Fix column names
-    patients.columns = patients.columns.str.strip().str.lower()
-    billing.columns = billing.columns.str.strip().str.lower()
-    claims.columns = claims.columns.str.strip().str.lower()
+    # Load files
+    patients = pd.read_excel(patients_file)
+    billing = pd.read_excel(billing_file)
+    insurance = pd.read_excel(insurance_file)
 
     st.success("Files uploaded successfully ✅")
 
     # Merge datasets
-    df = pd.merge(patients, billing, on="patient_id", how="left")
-    df = pd.merge(df, claims, on="patient_id", how="left")
+    df = pd.merge(patients, billing, on="Patient_ID", how="left")
+    df = pd.merge(df, insurance, on="Patient_ID", how="left")
 
-    # Handle missing values
-    df["paid_amount"] = df["paid_amount"].fillna(0)
-    df["charge"] = df["charge"].fillna(0)
+    # Revenue leakage calculation
+    df["Revenue_Loss"] = df["Billed_Amount_USD"] - df["Actual_Payment_USD"]
 
-    # Calculate loss
-    df["loss"] = df["charge"] - df["paid_amount"]
+    df["Revenue_Loss"] = df["Revenue_Loss"].fillna(0)
 
     # Identify issues
-    missing_claims = df[df["claim_submitted"] == "No"]
-    underpaid = df[df["paid_amount"] < df["charge"]]
+    missing_claims = df[df["Claim_Submitted"] == "No"]
+    underpaid_claims = df[df["Actual_Payment_USD"] < df["Billed_Amount_USD"]]
 
-    total_loss = df["loss"].sum()
+    total_loss = df["Revenue_Loss"].sum()
 
     st.divider()
 
-    # Dashboard Metrics
-    st.header("📊 Revenue Dashboard")
+    # Dashboard
+    st.header("📊 Revenue Leakage Dashboard")
 
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric("Total Patients", len(df))
+    col1.metric("Total Patients", df["Patient_ID"].nunique())
     col2.metric("Missing Claims", len(missing_claims))
-    col3.metric("Underpaid Claims", len(underpaid))
-    col4.metric("Total Revenue Leakage", f"₹ {int(total_loss)}")
+    col3.metric("Underpaid Claims", len(underpaid_claims))
+    col4.metric("Total Revenue Leakage", f"$ {total_loss}")
 
     st.divider()
 
-    # Data table
-    st.subheader("Hospital Data")
-    st.dataframe(df, use_container_width=True)
+    # Full Data
+    st.subheader("Hospital Combined Dataset")
+    st.dataframe(df)
 
     # Missing claims
     st.subheader("⚠ Missing Claims")
-    st.dataframe(missing_claims, use_container_width=True)
+    st.dataframe(missing_claims)
 
     # Underpaid claims
     st.subheader("💰 Underpaid Claims")
-    st.dataframe(underpaid, use_container_width=True)
+    st.dataframe(underpaid_claims)
 
     # Chart
-    st.subheader("Revenue Comparison Chart")
-    st.bar_chart(df[["charge","paid_amount"]])
+    st.subheader("Revenue Comparison")
+    st.bar_chart(df[["Billed_Amount_USD", "Actual_Payment_USD"]])
 
 else:
 
