@@ -1,0 +1,6 @@
+patient_id,procedure,charge,claim_submitted,paid_amount
+P1,Xray,2000,Yes,2000
+P2,MRI,6000,No,0
+P3,Surgery,20000,Yes,15000
+P4,Blood Test,1000,Yes,1000
+P5,CT Scan,8000,Yes,5000
