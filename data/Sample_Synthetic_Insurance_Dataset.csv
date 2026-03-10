@@ -1,0 +1,101 @@
+age,gender,bmi,children,smoker,region,medical_history,family_medical_history,exercise_frequency,occupation,coverage_level,charges
+42,female,29.1,4,no,northeast,Diabetes,No illness,Frequently,White collar,Basic,20229.46044
+39,male,36.7,2,yes,southwest,No illness,High blood pressure,Occasionally,Unemployed,Basic,21024.14979
+45,female,46.6,2,yes,southwest,High blood pressure,High blood pressure,Never,Blue collar,Basic,7601.410257
+49,female,38.6,1,no,southeast,Heart disease,High blood pressure,Rarely,Student,Standard,22287.27392
+48,female,39.3,1,no,northwest,Diabetes,No illness,Never,Student,Premium,17544.25088
+30,female,31.7,2,yes,southwest,Heart disease,Heart disease,Never,White collar,Basic,12790.79424
+59,male,21.1,1,no,southeast,No illness,No illness,Rarely,White collar,Standard,7799.525762
+18,female,37.2,3,no,northeast,No illness,High blood pressure,Never,Blue collar,Standard,17771.12392
+28,male,49.8,2,no,southwest,High blood pressure,Heart disease,Occasionally,Student,Standard,14517.97184
+22,female,19.8,2,yes,southeast,High blood pressure,Heart disease,Occasionally,Student,Standard,16852.00414
+25,male,41.1,3,yes,southeast,High blood pressure,No illness,Never,Blue collar,Premium,24596.7914
+62,female,27.6,1,yes,northwest,High blood pressure,High blood pressure,Rarely,Student,Basic,11176.65972
+37,female,24.6,3,yes,southwest,Diabetes,Heart disease,Never,Blue collar,Premium,6495.408509
+38,male,37,1,yes,northwest,Heart disease,Heart disease,Frequently,Blue collar,Standard,16090.69612
+25,female,30.2,2,yes,southwest,Heart disease,Heart disease,Never,Blue collar,Premium,23210.38711
+60,male,44.5,1,no,northwest,Diabetes,High blood pressure,Never,Unemployed,Standard,15636.45488
+22,female,26.3,1,no,southeast,Diabetes,Heart disease,Frequently,Blue collar,Premium,11828.90713
+62,female,20.2,2,yes,northwest,Heart disease,Heart disease,Never,Student,Standard,10491.10736
+48,female,35.6,2,yes,southwest,No illness,Diabetes,Occasionally,Unemployed,Premium,16347.72794
+64,male,23.6,1,yes,northeast,Diabetes,Diabetes,Never,White collar,Standard,17304.73649
+46,male,45,2,yes,northeast,No illness,Diabetes,Occasionally,Blue collar,Premium,16311.42604
+18,male,32.9,4,no,northwest,High blood pressure,Diabetes,Occasionally,Unemployed,Premium,10582.64286
+29,female,30.6,1,no,southeast,Heart disease,Diabetes,Frequently,Unemployed,Standard,26226.65729
+52,female,19.7,2,no,southwest,Heart disease,No illness,Occasionally,Student,Premium,16820.88994
+34,female,23.5,0,yes,northwest,No illness,Diabetes,Occasionally,White collar,Premium,17635.04296
+42,female,48.6,2,no,southwest,No illness,Diabetes,Frequently,Unemployed,Premium,10779.11948
+25,female,19.9,3,no,southeast,No illness,High blood pressure,Never,Unemployed,Standard,20185.13426
+62,female,22,2,no,southeast,High blood pressure,No illness,Frequently,Student,Standard,18028.36903
+57,female,21.2,4,no,northwest,Diabetes,Heart disease,Never,White collar,Basic,22794.48621
+25,male,47.4,0,yes,northeast,Diabetes,High blood pressure,Frequently,Blue collar,Basic,17736.20292
+46,male,21.3,0,no,northwest,Diabetes,Heart disease,Occasionally,Blue collar,Standard,18604.70324
+64,female,19.9,1,yes,southwest,Heart disease,No illness,Never,Student,Basic,9628.680338
+47,male,47.8,2,yes,southeast,Diabetes,High blood pressure,Occasionally,Blue collar,Premium,16451.58311
+45,male,34.5,1,no,southwest,Diabetes,Diabetes,Frequently,Blue collar,Premium,15450.9346
+42,male,21.8,2,no,southwest,High blood pressure,Heart disease,Never,Blue collar,Standard,15451.11094
+30,female,18.8,3,no,southeast,Heart disease,Heart disease,Never,Unemployed,Basic,24517.59441
+54,female,20.3,2,no,southwest,No illness,Diabetes,Rarely,White collar,Standard,15452.32446
+38,female,44.3,1,yes,northeast,Heart disease,High blood pressure,Occasionally,Blue collar,Standard,19425.46596
+45,male,25.7,3,yes,southeast,High blood pressure,Heart disease,Rarely,Student,Basic,12961.6762
+27,male,39.4,3,yes,northwest,High blood pressure,Diabetes,Occasionally,White collar,Standard,15216.18681
+26,female,21.1,3,no,northwest,Heart disease,Heart disease,Occasionally,White collar,Basic,15535.32396
+21,male,25.4,2,no,northeast,No illness,High blood pressure,Frequently,Unemployed,Basic,6062.852756
+21,female,34.5,0,yes,southeast,Diabetes,No illness,Rarely,Blue collar,Standard,10914.918
+54,male,23.2,0,yes,northeast,No illness,Heart disease,Frequently,Student,Basic,16075.10264
+50,female,49.9,3,no,northeast,Heart disease,No illness,Occasionally,Student,Premium,12937.68865
+25,female,21.2,3,yes,northwest,No illness,Diabetes,Rarely,Unemployed,Premium,18768.60576
+33,female,24.6,3,yes,northwest,Heart disease,High blood pressure,Never,Blue collar,Basic,10254.75113
+33,female,38.8,3,no,southwest,High blood pressure,Diabetes,Frequently,Student,Premium,19647.81353
+60,male,42.7,0,no,northwest,Heart disease,Heart disease,Rarely,Student,Standard,8350.50133
+49,female,42.1,0,yes,northeast,No illness,No illness,Rarely,Student,Premium,25826.86786
+23,female,39.2,3,yes,southwest,No illness,High blood pressure,Frequently,Blue collar,Standard,16893.58362
+25,female,27.2,0,yes,southeast,Diabetes,High blood pressure,Frequently,Student,Premium,19042.77222
+49,male,28.3,2,yes,northwest,Heart disease,Diabetes,Frequently,Unemployed,Standard,14285.95479
+54,male,23.8,2,no,southwest,No illness,Heart disease,Frequently,Unemployed,Basic,16742.47701
+25,male,28.5,3,yes,northeast,Heart disease,Heart disease,Frequently,Student,Standard,19664.70826
+36,male,23.9,0,yes,southwest,High blood pressure,Diabetes,Never,Blue collar,Premium,13362.34225
+48,male,47.5,0,yes,southwest,High blood pressure,Diabetes,Rarely,White collar,Premium,17890.48414
+27,male,35.9,2,no,southeast,High blood pressure,No illness,Occasionally,Blue collar,Premium,19571.5605
+49,male,19.3,2,no,northeast,Heart disease,Diabetes,Never,Student,Basic,12772.6732
+24,female,36.6,4,yes,northwest,No illness,No illness,Frequently,Blue collar,Basic,17789.01443
+48,male,28.6,3,no,northeast,Diabetes,Heart disease,Frequently,Unemployed,Standard,21974.14737
+38,female,27.7,0,yes,northeast,Heart disease,Diabetes,Frequently,Unemployed,Basic,18336.56654
+30,female,23.4,2,yes,northeast,High blood pressure,No illness,Frequently,Unemployed,Premium,25131.19254
+52,male,24.2,3,no,southeast,Diabetes,Heart disease,Occasionally,Blue collar,Basic,12449.021
+35,female,33.2,0,yes,northwest,No illness,No illness,Frequently,Unemployed,Premium,9981.600456
+42,female,22.9,0,no,northwest,No illness,Diabetes,Frequently,Unemployed,Premium,24708.43988
+18,female,40.8,3,yes,southwest,Diabetes,High blood pressure,Rarely,Student,Standard,22675.15327
+45,male,39.7,1,no,northeast,Heart disease,High blood pressure,Never,Unemployed,Standard,21866.30252
+25,male,41.8,3,yes,southeast,Heart disease,High blood pressure,Rarely,Unemployed,Standard,13433.78424
+61,male,37.3,1,no,southwest,Heart disease,High blood pressure,Never,Student,Standard,11025.488
+50,female,49.2,2,no,northwest,No illness,High blood pressure,Frequently,Unemployed,Standard,13014.23307
+20,male,39.7,3,no,southeast,No illness,No illness,Rarely,Blue collar,Basic,15219.38446
+55,female,38.4,3,no,southeast,Diabetes,Diabetes,Rarely,White collar,Premium,14201.41375
+50,male,30.2,1,yes,southwest,High blood pressure,High blood pressure,Never,Unemployed,Premium,14439.72329
+41,female,46.4,3,no,southeast,High blood pressure,Heart disease,Occasionally,Blue collar,Premium,20308.32977
+50,male,21.6,3,no,northeast,No illness,No illness,Never,Student,Premium,26854.06126
+21,female,39.3,3,no,northwest,No illness,No illness,Occasionally,Unemployed,Basic,22282.37968
+55,female,20.2,1,no,northeast,No illness,High blood pressure,Occasionally,Student,Standard,18000.54898
+56,male,27.4,3,no,northeast,Diabetes,High blood pressure,Occasionally,Unemployed,Basic,15980.91552
+56,male,34.2,0,yes,northwest,No illness,No illness,Frequently,Student,Basic,15135.55719
+32,male,25.2,2,yes,northwest,Heart disease,Diabetes,Never,Unemployed,Standard,17231.74903
+51,male,25.3,0,yes,northeast,Diabetes,Diabetes,Occasionally,Blue collar,Premium,12944.65082
+63,female,24.9,2,no,northeast,Diabetes,Diabetes,Frequently,Student,Basic,10942.41514
+56,female,34,4,no,southeast,Diabetes,No illness,Rarely,Student,Basic,16835.36348
+49,female,32.6,4,yes,northeast,High blood pressure,High blood pressure,Occasionally,White collar,Basic,15431.22781
+20,male,48.6,2,no,southeast,High blood pressure,Heart disease,Never,White collar,Basic,19849.14251
+45,male,20.7,2,no,northeast,Heart disease,Diabetes,Occasionally,Blue collar,Premium,15135.34056
+43,female,34,0,no,southwest,Diabetes,No illness,Occasionally,Blue collar,Premium,19980.05441
+39,female,28.6,3,yes,northeast,Heart disease,No illness,Rarely,Student,Premium,9991.91021
+52,female,27.8,3,no,southeast,No illness,Heart disease,Frequently,Student,Standard,19310.07547
+41,female,32.6,0,yes,northwest,Diabetes,Diabetes,Rarely,White collar,Standard,7142.249544
+57,female,48.1,3,yes,northwest,High blood pressure,No illness,Never,Unemployed,Premium,12447.40767
+21,female,46.6,1,no,northeast,Diabetes,Heart disease,Frequently,Student,Premium,18128.58161
+18,male,47.1,0,no,northeast,No illness,Diabetes,Occasionally,Student,Standard,18916.27177
+43,male,38.9,1,yes,southwest,No illness,Diabetes,Rarely,Blue collar,Standard,12050.70015
+31,male,22.8,3,yes,northwest,High blood pressure,Heart disease,Frequently,Blue collar,Standard,15377.14076
+19,female,48.8,1,no,northwest,High blood pressure,Diabetes,Never,Unemployed,Premium,22136.57022
+32,female,28.4,0,yes,northwest,High blood pressure,No illness,Never,Student,Standard,15787.54307
+41,male,49.4,0,yes,northeast,High blood pressure,Heart disease,Never,White collar,Basic,24653.03154
+41,female,39.4,0,no,southwest,No illness,No illness,Never,Unemployed,Basic,21766.56512

@@ -1,0 +1,6 @@
+encounter_id,patient_id,visit_date,doctor
+ENC1,PAT1,2026-01-10,Dr.A
+ENC2,PAT2,2026-01-12,Dr.B
+ENC3,PAT3,2026-01-15,Dr.C
+ENC4,PAT4,2026-01-20,Dr.A
+ENC5,PAT5,2026-01-25,Dr.B

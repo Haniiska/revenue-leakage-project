@@ -1,0 +1,6 @@
+encounter_id,submitted,paid_amount
+ENC1,True,2000
+ENC2,False,0
+ENC3,True,1200
+ENC4,True,2500
+ENC5,True,0
